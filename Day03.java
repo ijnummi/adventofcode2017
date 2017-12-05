@@ -3,62 +3,51 @@ import java.util.Map;
 
 public class Day03 {
 
-	private static Map<String, Long> places;
-	private static Map<String, Long> sums;
+	private static Map<String, Long> sums = new HashMap<>();
+	private static long input = 277678;
 
 	public static void main(String[] args) {
-		int dir = 180, x = 0, y = 0;
-		boolean first = true;
-		places = new HashMap<>();
-		sums = new HashMap<>();
-		places.put(x + "/" + y, 1L);
+		int dir = 180, x = 0, y = 0, sum2 = 0;
 		sums.put(x + "/" + y, 1L);
-
-		for (long i = 2; i <= 277678; i++) {
+		for (long i = 2; i <= input; i++) {
 			if (freeLeft(dir, x, y)) {
-				dir = (dir + 360 - 90) % 360;
+				dir = turn(dir);
 			}
-			if (dir == 0) y++;
-			if (dir == 90) x++;
-			if (dir == 180) y--;
-			if (dir == 270) x--;
-			long sum = sum(x, y);
-			places.put(x + "/" + y, i);
-			sums.put(x + "/" + y, sum);
-			if (first && sum > 277678) {
-				System.out.println(sum);
-				first = false;
+			x = advance(x, dir, true);
+			y = advance(y, dir, false);
+			if (sum2 == 0 && sum(x, y) > input) {
+				sum2 = sum(x, y);
 			}
+			sums.put(x + "/" + y, (long) sum(x, y));
 		}
-		System.out.println("Part1: " + (Math.abs(x) + Math.abs(y)));
+		System.out.println("Part1: " + (Math.abs(x) + Math.abs(y)) + "   Part2: " + sum2);
 	}
 
 	private static boolean freeLeft(int dir, int x, int y) {
-		dir = (dir + 360 - 90) % 360;
-		if (dir == 0) y++;
-		if (dir == 90) x++;
-		if (dir == 180) y--;
-		if (dir == 270) x--;
-		return !places.containsKey(x + "/" + y);
+		dir = turn(dir);
+		x = advance(x, dir, true);
+		y = advance(y, dir, false);
+		return !sums.containsKey(x + "/" + y);
 	}
 
-	private static long sum(int x, int y) {
-		return
-			sums.getOrDefault((x + 0) + "/" + (y + 0), 0L) +
-			sums.getOrDefault((x + 1) + "/" + (y + 0), 0L) +
-			sums.getOrDefault((x + 0) + "/" + (y + 1), 0L) +
-			sums.getOrDefault((x + 1) + "/" + (y + 1), 0L) +
-			sums.getOrDefault((x + 0) + "/" + (y - 1), 0L) +
-			sums.getOrDefault((x - 1) + "/" + (y + 0), 0L) +
-			sums.getOrDefault((x - 1) + "/" + (y + 1), 0L) +
-			sums.getOrDefault((x + 1) + "/" + (y - 1), 0L) +
-			sums.getOrDefault((x - 1) + "/" + (y - 1), 0L);
+	private static int advance(int pos, int dir, boolean x) {
+		if (x ? dir == 90 : dir == 0) pos++;
+		if (x ? dir == 270 : dir == 180) pos--;
+		return pos;
+	}
+
+	private static int turn(int dir) {
+		return (dir + 360 - 90) % 360;
+	}
+
+	private static int sum(int x, int y) {
+		int sum = 0;
+		for (int i = x - 1; i <= x + 1; i++) {
+			for (int j = y - 1; j <= y + 1; j++) {
+				sum += sums.getOrDefault(i + "/" + j, 0L);
+			}
+		}
+		return sum;
 	}
 
 }
-
-//147  142  133  122   59
-//304    5    4    2   57
-//330   10    1    1   54
-//351   11   23   25   26
-//362  747  806--->   ...

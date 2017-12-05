@@ -11,14 +11,11 @@ public class Day04 {
 
 	public static void main(String[] args) {
 		int sum1 = 0, sum2 = 0;
+		outer:
 		for (String row : inputs) {
 			if (Arrays.stream(row.split("\\s")).distinct().count() == Arrays.stream(row.split("\\s")).count()) {
 				sum1++;
-			}
-		}
-		outer:
-		for (String row : inputs) {
-			if (Arrays.stream(row.split("\\s")).distinct().count() != Arrays.stream(row.split("\\s")).count()) {
+			} else {
 				continue;
 			}
 			List<String> words = Arrays.asList(row.split("\\s"));
