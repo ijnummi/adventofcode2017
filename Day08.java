@@ -19,9 +19,7 @@ public class Day08 {
 			if (doInstr) {
 				regs.put(line.split("\\s")[0], regs.getOrDefault(line.split("\\s")[0], 0) + (line.split("\\s")[1].equals("inc") ? Integer.valueOf(line.split("\\s")[2]) : -Integer.valueOf(line.split("\\s")[2])));
 			}
-			if (max < regs.values().stream().mapToInt(Integer::valueOf).max().getAsInt()) {
-				max = regs.values().stream().mapToInt(Integer::valueOf).max().getAsInt();
-			}
+			max = Math.max(max, regs.values().stream().mapToInt(Integer::valueOf).max().getAsInt());
 		}
 		System.out.println(regs.values().stream().mapToInt(Integer::valueOf).max().getAsInt() + " - " + max);
 	}
