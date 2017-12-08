@@ -1,18 +1,13 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Day04 {
 
-	private static List<String> inputs;
-
-	public static void main(String[] args) {
+	public static void main(String[] args) throws java.io.IOException {
 		int sum1 = 0, sum2 = 0;
 		outer:
-		for (String row : inputs) {
+		for (String row : java.nio.file.Files.readAllLines(java.nio.file.Paths.get("4.txt"))) {
 			if (Arrays.stream(row.split("\\s")).distinct().count() == Arrays.stream(row.split("\\s")).count()) {
 				sum1++;
 			} else {
@@ -35,12 +30,6 @@ public class Day04 {
 		String sort1 = Arrays.stream(str1.split("")).sorted().collect(Collectors.joining());
 		String sort2 = Arrays.stream(str2.split("")).sorted().collect(Collectors.joining());
 		return sort1.equals(sort2);
-	}
-
-	static {
-		try {
-			inputs = Files.readAllLines(Paths.get("4.txt"));
-		} catch (IOException e) {}
 	}
 
 }

@@ -1,13 +1,8 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 public class Day01 {
 
-	private static char[] arr;
-
-	public static void main(String[] args) {
+	public static void main(String[] args) throws java.io.IOException {
 		int sum1 = 0, sum2 = 0;
+		char[] arr = java.nio.file.Files.readAllLines(java.nio.file.Paths.get("1.txt")).get(0).toCharArray();
 		for (int i = 0; i < arr.length; i++) {
 			if (arr[i] == arr[(i + 1) % arr.length]) {
 				sum1 += Integer.valueOf(String.valueOf(arr[i]));
@@ -17,12 +12,6 @@ public class Day01 {
 			}
 		}
 		System.out.println(sum1 + " - " + sum2);
-	}
-
-	static {
-		try {
-			arr = Files.readAllLines(Paths.get("1.txt")).get(0).toCharArray();
-		} catch (IOException e) {}
 	}
 
 }
